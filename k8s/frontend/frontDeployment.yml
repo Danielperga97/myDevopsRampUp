@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movie-analist-ui
+  template:
+    metadata:
+      labels:
+        app: movie-analist-ui
+    spec:
+      containers:
+      - name: node-alpine
+        image: node:current-alpine
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 125m
+            memory: 120Mi
+        ports:
+        - containerPort: 3000
+        

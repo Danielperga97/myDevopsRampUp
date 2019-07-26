@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  movie-analist-api-service 
+spec:
+  selector:
+    app:  movie-analist-api
+  ports:
+  - name:  movie-analist-api
+    port:  3000
+    targetPort:  3000

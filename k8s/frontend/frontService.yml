@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  movie-analist-ui-service 
+spec:
+  selector:
+    app:  movie-analist-ui
+  type:  LoadBalancer
+  ports:
+  - name:  movie-analist-ui
+    port:  80
+    targetPort:  3000
