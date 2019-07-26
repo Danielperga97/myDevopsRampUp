@@ -9,7 +9,9 @@ spec:
   selector:
     app:  movie-analist-ui
     tier: frontend
-  type:  LoadBalancer
   ports:
-  - port: 80
+  - protocol: "TCP"
+    port: 80
     targetPort: 3000
+  type:  LoadBalancer
+
