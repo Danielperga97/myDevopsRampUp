@@ -13,8 +13,8 @@ spec:
         app: movie-analyst-api
     spec:
       containers:
-      - name: gcr.io/ramp-up-247818/movie-analyst-api:0.1.0
-        image: node:current-alpine
+      - name: movie-analyst-api
+        image: gcr.io/ramp-up-247818/movie-analyst-api:0.1.0
         resources:
           requests:
             cpu: 100m
