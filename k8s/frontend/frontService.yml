@@ -2,10 +2,12 @@ kind: Service
 apiVersion: v1
 metadata:
   name:  movie-analist-ui-service 
+  tier: frontend
 spec:
   selector:
     app:  movie-analist-ui
-  type:  NodePort
+    tier: frontend
+  type:  LoadBalancer
   ports:
-  - port:  80
+  - port: 80
     targetPort: 3000
