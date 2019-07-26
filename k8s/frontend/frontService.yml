@@ -2,7 +2,9 @@ kind: Service
 apiVersion: v1
 metadata:
   name:  movie-analist-ui-service 
-  tier: frontend
+  labels:
+    app: movie-analyst-ui
+    tier: frontend
 spec:
   selector:
     app:  movie-analist-ui
