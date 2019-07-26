@@ -6,15 +6,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: movie-analist-ui
+      app: movie-analyst-ui
   template:
     metadata:
       labels:
-        app: movie-analist-ui
+        app: movie-analyst-ui
     spec:
       containers:
-      - name: node-alpine
-        image: node:current-alpine
+      - name: movie-analyst-ui
+        image: gcr.io/ramp-up-247818/movie-analyst-api:0.1.0
         resources:
           requests:
             cpu: 100m
