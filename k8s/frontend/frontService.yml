@@ -1,13 +1,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name:  movie-analist-ui-service 
+  name:  movie-analyst-ui 
   labels:
     app: movie-analyst-ui
     tier: frontend
 spec:
   selector:
-    app:  movie-analist-ui
+    app:  movie-analyst-ui
     tier: frontend
   ports:
   - protocol: "TCP"
