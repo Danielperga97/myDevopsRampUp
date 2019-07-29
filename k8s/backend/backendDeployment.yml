@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: backend-deployment
+  name: movie-analyst-api
 spec:
   replicas: 2
   selector:
