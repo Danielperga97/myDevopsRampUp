@@ -1,0 +1,10 @@
+plugin: gcp_compute
+projects:
+  - ramp-up-247818
+zones:
+  - "us-east1-b"
+filters: 
+  - 'name = jenkins-instance-*'
+auth_kind: serviceaccount
+service_account_file: "/home/daniel/Documentos/Rampup-f6205223ec03.json"
+
