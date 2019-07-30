@@ -8,6 +8,29 @@
     yum:    
       name: java-1.8.0-openjdk-devel
       state: latest
+  - name: install git   
+    yum:
+      name: git
+      state: latest
+  - name: install docker
+    yum:
+      name: docker
+      state: latest
+  - name: start and enable docker
+    service:
+      name: docker
+      state: started
+      enabled: yes
+  - name: ensure group docker exists
+    group:
+      name: docker
+      state: present
+  - name: add jenkins user to docker group
+    user:
+      name: jenkins
+      groups: docker
+      state: present
+      append: yes 
   - name: add jenkins repo
     yum_repository:
       name: Jenkins-stable
@@ -120,10 +143,8 @@
       - mailer
       - publish-over-ssh
       - ssh
-  - name: restart jenkins service
-    service: 
-     name: jenkins 
-     state: restarted
+  - name: reboot machine
+    reboot:
   - name: wait for jenkins to start
     wait_for:
       host: 0.0.0.0
