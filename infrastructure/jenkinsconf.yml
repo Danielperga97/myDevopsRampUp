@@ -77,7 +77,7 @@
     wait_for:
       host: 0.0.0.0
       port: 8080
-      delay: 5
+      delay: 35
   - name: install plugins 
     jenkins_plugin:
       name: "{{ item }}"
@@ -87,7 +87,6 @@
       with_dependencies: yes
     ignore_errors: true
     with_items: 
-      - dashboard-view
       - cloudbees-folder
       - antisamy-markup-formatter
       - build-name-setter
@@ -95,6 +94,7 @@
       - config-file-provider
       - credentials-binding
       - embeddable-build-status
+      - dashboard-view
       - rebuild
       - ssh-agent
       - throttle-concurrents
@@ -124,6 +124,7 @@
       - git
       - git-parameter
       - github
+      - github-branch-source
       - gitlab-plugin
       - p4
       - repo

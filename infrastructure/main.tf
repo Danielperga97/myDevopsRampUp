@@ -38,6 +38,10 @@ resource "google_compute_firewall" "firewall" {
     protocol = "tcp"
     ports    = ["3030"]
   }
+    allow {
+    protocol = "tcp"
+    ports = ["8080"]
+}
 
 }
 
