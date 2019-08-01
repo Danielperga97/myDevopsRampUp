@@ -81,6 +81,10 @@ resource "google_container_cluster" "gke-cluster" {
     metadata = {
         ssh-keys= "danielprga:${file("/home/daniel/.ssh/google_compute_engine.pub")}"
     }
+      network_interface {
+      subnetwork       = "${google_compute_subnetwork.subnet1.name}"
+      access_config {
+    }}
       labels={
       role = "cluster-node"
   }

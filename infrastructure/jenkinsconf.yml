@@ -3,11 +3,22 @@
   become: yes
   become_user: root
   become_method: sudo 
+  environment: 
+    JENKINS_HOME: /etc/sysconfig/jenkins
   tasks:
   - name: install java 
     yum:    
       name: java-1.8.0-openjdk-devel
       state: latest
+  - name: install nodejs 
+    yum:    
+      name: nodejs
+      state: latest
+  - name: Create dockerfiles directory
+    file:
+      path: /tmp/front-dockerfile
+      state: directory
+      mode: '0777'
   - name: install git   
     yum:
       name: git
