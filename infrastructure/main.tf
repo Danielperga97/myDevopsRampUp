@@ -81,10 +81,15 @@ resource "google_container_cluster" "gke-cluster" {
     metadata = {
         ssh-keys= "danielprga:${file("/home/daniel/.ssh/google_compute_engine.pub")}"
     }
-      network_interface {
-      subnetwork       = "${google_compute_subnetwork.subnet1.name}"
-      access_config {
-    }}
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/devstorage",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/trace.append"
+    ]
+
       labels={
       role = "cluster-node"
   }
