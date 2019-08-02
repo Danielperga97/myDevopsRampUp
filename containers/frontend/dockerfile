@@ -2,7 +2,7 @@ FROM node:current-alpine
 WORKDIR /
 RUN apk add git
 RUN git clone https://github.com/Danielperga97/movie-analyst-ui.git /movie-analyst-ui
-WORKDIR /movie-analiyst-ui
+WORKDIR /movie-analyst-ui
 ENV BACK_HOST=movie-analyst-api
 RUN npm install 
 EXPOSE 3030
