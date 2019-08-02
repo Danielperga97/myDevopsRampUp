@@ -35,6 +35,7 @@ pipeline {
         stage('test plan') {
             steps {
                 sh 'ls -la'
+                sh 'cd infrastructure'
                 sh 'terraform plan'
             }
         }
