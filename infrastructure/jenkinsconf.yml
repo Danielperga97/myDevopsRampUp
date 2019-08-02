@@ -23,6 +23,12 @@
       src: https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip
       dest: /usr/bin/
       remote_src: yes
+  - name: Copy credentials to jenkins server
+    copy:
+      src: /home/daniel/Documentos/Rampup-45f3b26c77de.json
+      dest: /home/jenkins/Rampup-45f3b26c77de.json
+      owner: jenkins
+      mode: '0644'
   - name: Create dockerfiles directory
     file:
       path: /tmp/front-dockerfile
