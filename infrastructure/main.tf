@@ -79,7 +79,7 @@ resource "google_container_cluster" "gke-cluster" {
         preemptible  = true
         machine_type = "n1-standard-1"
     metadata = {
-        ssh-keys= "danielprga:${file("/home/daniel/.ssh/google_compute_engine.pub")}"
+        ssh-keys= "danielprga:${file("/home/jenkins/google_compute_engine")}"
     }
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
