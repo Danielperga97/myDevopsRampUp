@@ -63,7 +63,7 @@ resource "google_compute_instance" "jenkins_instance" {
     }
   }
   metadata = {
-      ssh-keys= "danielprga:${file("/home/daniel/.ssh/google_compute_engine.pub")}"
+      ssh-keys= "danielprga:${file("/home/jenkins/google_compute_engine.pub")}"
   }
 }
 resource "google_container_cluster" "gke-cluster" {
