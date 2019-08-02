@@ -10,7 +10,7 @@ pipeline {
         stage('terraform and google cloud set up') {
             steps {
                 sh 'terraform -v'
-                sh 'cd infraestructure'
+                sh 'cd infrastructure'
                 sh 'echo ------------------setting up google cloud ------------------'
                 sh """
         	        #!/bin/bash
