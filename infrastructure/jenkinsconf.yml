@@ -14,6 +14,15 @@
     yum:    
       name: nodejs
       state: latest
+  - name: install unzip 
+    yum:
+      name: unzip
+      state: latest
+  - name: download and extract terraform
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip
+      dest: /usr/bin/
+      remote_src: yes
   - name: Create dockerfiles directory
     file:
       path: /tmp/front-dockerfile
