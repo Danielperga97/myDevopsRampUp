@@ -9,11 +9,11 @@ resource "random_id" "id" {
 }
 
 resource "google_compute_network" "vpc1" {
-  name                    = "vpc-${random_id.id.hex}"
+  name                    = "vpc-1"
   auto_create_subnetworks = "false"
 }
 resource "google_compute_subnetwork" "subnet1" {
-  name          = "subnet-${random_id.id.hex}"
+  name          = "subnet-1"
   ip_cidr_range = "10.20.0.0/24"
   network       = "${google_compute_network.vpc1.name}"
   region        = "us-east1"
@@ -46,7 +46,7 @@ resource "google_compute_firewall" "firewall" {
 }
 
 resource "google_compute_instance" "jenkins_instance" {
-  name         = "jenkins-instance-${random_id.id.hex}"
+  name         = "jenkins-instance-1"
   machine_type = "n1-standard-1"
   zone         = "us-east1-b"
   labels={
@@ -67,7 +67,7 @@ resource "google_compute_instance" "jenkins_instance" {
   }
 }
 resource "google_container_cluster" "gke-cluster" {
-  name               = "gke-cluster-${random_id.id.hex}"
+  name               = "gke-cluster-1"
   network            = "${google_compute_network.vpc1.id}"
   subnetwork         = "${google_compute_subnetwork.subnet1.id}"
   location               = "us-east1-b"
