@@ -9,9 +9,10 @@ pipeline {
     stages {
         stage('terraform and google cloud set up') {
             steps {
+                dir('infrastructure/'){
                 sh 'terraform -v'
-                sh 'cd infrastructure'
                 sh "terraform init"
+                }
                 sh 'echo ------------------setting up google cloud ------------------'
                 sh """
         	        #!/bin/bash
@@ -34,9 +35,10 @@ pipeline {
         }
         stage('test plan') {
             steps {
-                sh 'cd infrastructure'
-                sh 'pwd'
+            dir('infrastructure/'){ 
+                 sh 'pwd'
                 sh 'terraform plan'
+            }
             }
         }
         stage('plan approval'){
@@ -49,7 +51,9 @@ pipeline {
         stage('deploy') {
             steps {
                 sh "echo ---------------terraforming----------------------------"
+                dir('infrastructure/'){
                 sh "terraform apply -auto-approve"
+                }
                 sh "echo ---------------terraformed----------------------------"
                 sh ""
                 sh '/usr/bin/curl -o /tmp/front-dockerfile/dockerfile https://raw.githubusercontent.com/Danielperga97/myDevopsRampUp/develop/containers/backend/dockerfile'
