@@ -11,6 +11,7 @@ pipeline {
             steps {
                 sh 'terraform -v'
                 sh 'cd infrastructure'
+                sh "terraform init"
                 sh 'echo ------------------setting up google cloud ------------------'
                 sh """
         	        #!/bin/bash
