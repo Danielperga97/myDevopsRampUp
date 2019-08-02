@@ -1,5 +1,5 @@
 provider "google" {
- credentials = "${file("/home/daniel/Documentos/Ramp up-45f3b26c77de.json")}"
+ credentials = "${file("${GOOGLE_SERVICE_ACCOUNT_KEY}")}"
  project     = "ramp-up-247818"
  region      = "us-east1"
 }
