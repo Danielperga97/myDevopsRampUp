@@ -34,7 +34,7 @@ pipeline {
         }
         stage('test plan') {
             steps {
-                sh 'terraform plan -out=plan '
+                sh 'terraform plan'
             }
         }
         stage('plan approval'){
