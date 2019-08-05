@@ -46,7 +46,7 @@ resource "google_compute_firewall" "firewall" {
 }
 
 resource "google_compute_instance" "jenkins_instance" {
-  name         = "jenkins-1"
+  name         = "jenkins-instance-1"
   machine_type = "n1-standard-1"
   zone         = "us-east1-b"
   labels={
