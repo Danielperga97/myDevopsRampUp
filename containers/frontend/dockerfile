@@ -1,6 +1,7 @@
 FROM node:current-alpine
 WORKDIR /
 RUN apk add git
+ADD https://api.github.com/repos/danielperga97/mydevopsrampup/git/refs/heads/develop version.json
 RUN git clone https://github.com/Danielperga97/movie-analyst-ui.git /movie-analyst-ui
 WORKDIR /movie-analyst-ui
 ENV BACK_HOST=movie-analyst-api
