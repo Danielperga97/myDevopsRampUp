@@ -14,9 +14,11 @@ spec:
         app: movie-analyst-ui
         tier: frontend
     spec:
+      terminationGracePeriodSeconds: 20
       containers:
       - name: movie-analyst-ui
         image: gcr.io/ramp-up-247818/movie-analyst-ui:1.0.0
+        imagePullPolicy: "Always"
         resources:
           requests:
             cpu: 100m
