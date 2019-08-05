@@ -9,6 +9,7 @@ ENV DB_USER=postgres
 ENV DB_HOST=movie-analyst-api
 ENV DB_NAME=movie_db
 ENV DB_PASS=2045835202
+ENV PORT=3000
 RUN npm install 
 RUN npm install pg
 EXPOSE 3000
