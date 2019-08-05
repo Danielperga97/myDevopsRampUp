@@ -19,7 +19,7 @@ resource "google_compute_subnetwork" "subnet1" {
   region        = "us-east1"
 }
 resource "google_compute_firewall" "firewall" {
-  name    = "ramp-up-rules"
+  name    = "ramp-up-rules-1"
   network = "${google_compute_network.vpc1.name}"
 
   allow {
