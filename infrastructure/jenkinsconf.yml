@@ -1,0 +1,191 @@
+- name: jenkins auto configuration 
+  hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo 
+  environment: 
+    JENKINS_HOME: /etc/sysconfig/jenkins
+  tasks:
+  - name: install java 
+    yum:    
+      name: java-1.8.0-openjdk-devel
+      state: latest
+  - name: install nodejs 
+    yum:    
+      name: nodejs
+      state: latest
+  - name: install unzip 
+    yum:
+      name: unzip
+      state: latest
+  - name: download and extract terraform
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip
+      dest: /usr/bin/
+      remote_src: yes
+  - name: Copy service account to jenkins server
+    copy:
+      src: /home/daniel/Documentos/Rampup-45f3b26c77de.json
+      dest: /home/jenkins/Rampup-45f3b26c77de.json
+      owner: jenkins
+      mode: '0644'
+  - name: Copy ssh key to jenkins server
+    copy:
+      src: /home/daniel/.ssh/google_compute_engine.pub
+      dest: /home/jenkins/google_compute_engine.pub
+      owner: jenkins
+      mode: '0644'
+  - name: Copy ssh key to jenkins server
+    copy:
+      src: /home/daniel/.ssh/google_compute_engine
+      dest: /home/jenkins/google_compute_engine
+      owner: jenkins
+      mode: '0644'
+  - name: Create dockerfiles directory
+    file:
+      path: /tmp/front-dockerfile
+      state: directory
+      mode: '0777'
+  - name: install git   
+    yum:
+      name: git
+      state: latest
+  - name: install docker
+    yum:
+      name: docker
+      state: latest
+  - name: start and enable docker
+    service:
+      name: docker
+      state: started
+      enabled: yes
+  - name: ensure group docker exists
+    group:
+      name: docker
+      state: present
+  - name: add jenkins user to docker group
+    user:
+      name: jenkins
+      groups: docker
+      state: present
+      append: yes 
+  - name: add jenkins repo
+    yum_repository:
+      name: Jenkins-stable
+      description: Jenkins YUM repo
+      baseurl: http://pkg.jenkins.io/redhat-stable
+      file: /etc/yum.repos.d/jenkins.repo
+  - name: add jenkins key 
+    rpm_key: 
+      state: present
+      key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+  - name: install jenkins 
+    yum:    
+      name: jenkins
+      state: present
+  - name: start and enable Jenkins server
+    service:
+      name: jenkins
+      state: started
+      enabled: yes 
+  - name: disable jenkins initialization password screen
+    lineinfile:
+      dest: /etc/sysconfig/jenkins
+      regexp: '^(.*)JAVA_ARGS(.*)'
+      line: 'JAVA_ARGS="-Djenkins.install.runSetupWizard=false"'
+  - name: disable jenkins initialization password screen 2
+    lineinfile:
+      dest: /etc/sysconfig/jenkins
+      regexp: '^(.*)JENKINS_JAVA_OPTIONS(.*)'
+      line: 'JENKINS_JAVA_OPTIONS="-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"'
+  - name: create groovy init.d folder
+    file:
+      path: /var/lib/jenkins/init.groovy.d
+      state: directory
+      mode: "u=rw,g=rwx,o=rwx"
+  - name: create default user 
+    copy: 
+      src: /home/daniel/Documentos/workspace_rampup/basic-security.groovy
+      dest: /var/lib/jenkins/init.groovy.d/basic-security.groovy
+  - name: restart jenkins service
+    service: 
+     name: jenkins 
+     state: restarted
+  - name: wait for jenkins to start
+    wait_for:
+      host: 0.0.0.0
+      port: 8080
+      delay: 35
+  - name: install plugins 
+    jenkins_plugin:
+      name: "{{ item }}"
+      url_username: jenkinsadmin
+      url_password: "jenkinspassword"
+      state: latest
+      with_dependencies: yes
+    ignore_errors: true
+    with_items: 
+      - cloudbees-folder
+      - antisamy-markup-formatter
+      - build-name-setter
+      - build-timeout
+      - config-file-provider
+      - credentials-binding
+      - embeddable-build-status
+      - dashboard-view
+      - rebuild
+      - ssh-agent
+      - throttle-concurrents
+      - timestamper
+      - ws-cleanup
+      - ant
+      - gradle
+      - msbuild
+      - nodejs
+      - checkstyle
+      - cobertura
+      - htmlpublisher
+      - junit
+      - warnings
+      - xunit
+      - workflow-aggregator
+      - github-organization-folder
+      - pipeline-stage-view
+      - build-pipeline-plugin
+      - conditional-buildstep
+      - jenkins-multijob-plugin
+      - parameterized-trigger
+      - copyartifact
+      - bitbucket
+      - clearcase
+      - cvs
+      - git
+      - git-parameter
+      - github
+      - github-branch-source
+      - gitlab-plugin
+      - p4
+      - repo
+      - subversion
+      - teamconcert
+      - tfs
+      - matrix-project
+      - ssh-slaves
+      - windows-slaves
+      - matrix-auth
+      - pam-auth
+      - ldap
+      - role-strategy
+      - active-directory
+      - email-ext
+      - emailext-template
+      - mailer
+      - publish-over-ssh
+      - ssh
+  - name: reboot machine
+    reboot:
+  - name: wait for jenkins to start
+    wait_for:
+      host: 0.0.0.0
+      port: 8080
+      delay: 5

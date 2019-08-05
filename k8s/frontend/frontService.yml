@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  movie-analyst-ui 
+  labels:
+    app: movie-analyst-ui
+    tier: frontend
+spec:
+  selector:
+    app:  movie-analyst-ui
+    tier: frontend
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 3030
+  type:  LoadBalancer
+

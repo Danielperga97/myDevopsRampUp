@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: movie-analyst-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movie-analyst-ui
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: movie-analyst-ui
+        tier: frontend
+    spec:
+      terminationGracePeriodSeconds: 20
+      containers:
+      - name: movie-analyst-ui
+        image: gcr.io/ramp-up-247818/movie-analyst-ui:1.0.0
+        imagePullPolicy: "Always"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 125m
+            memory: 120Mi
+        ports:
+        - containerPort: 3030
