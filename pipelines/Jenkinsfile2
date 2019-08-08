@@ -41,8 +41,8 @@ pipeline {
                 /home/jenkins/google-cloud-sdk/bin/kubectl
                 /home/jenkins/google-cloud-sdk/bin/kubectl version --short
                 /home/jenkins/google-cloud-sdk/bin/kubectl get service 
-                /home/jenkins/google-cloud-sdk/bin/kubectl create -f frontDeployment.yml
-                /home/jenkins/google-cloud-sdk/bin/kubectl create -f frontService.yml
+                /home/jenkins/google-cloud-sdk/bin/kubectl create -f frontDeployment.yml --dry-run=true -o yaml | kubectl apply -f -
+                /home/jenkins/google-cloud-sdk/bin/kubectl create -f frontService.yml --dry-run=true -o yaml | kubectl apply -f -
                 """
             }
                 dir('k8s/backend/'){
@@ -50,8 +50,8 @@ pipeline {
                 #!/bin/bash 
                 gcloud auth activate-service-account --key-file ${GOOGLE_SERVICE_ACCOUNT_KEY};
                 gcloud container clusters get-credentials gke-cluster-1 --zone us-east1-b;
-                /home/jenkins/google-cloud-sdk/bin/kubectl create -f backendDeployment.yml
-                /home/jenkins/google-cloud-sdk/bin/kubectl create -f backendService.yml
+                /home/jenkins/google-cloud-sdk/bin/kubectl create -f backendDeployment.yml --dry-run=true -o yaml | kubectl apply -f -
+                /home/jenkins/google-cloud-sdk/bin/kubectl create -f backendService.yml --dry-run=true -o yaml | kubectl apply -f -
                 """
             }
         }
