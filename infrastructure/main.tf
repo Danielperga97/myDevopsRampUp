@@ -25,7 +25,7 @@ resource "google_compute_instance" "jenkins_instance" {
     }
   }
   network_interface {
-    subnetwork       = "${module.network.subnet_id}"
+    subnetwork       = "projects/ramp-up-247818/regions/us-east1/subnetworks/${module.network.subnet_id}"
     access_config {
     }
   }
@@ -36,7 +36,7 @@ resource "google_compute_instance" "jenkins_instance" {
 resource "google_container_cluster" "gke-cluster" {
   name               = "gke-cluster-1"
   network            = "${module.network.vpc_id}"
-  subnetwork         = "${module.network.subnet_id}"
+  subnetwork         = "projects/ramp-up-247818/regions/us-east1/subnetworks/${module.network.subnet_id}"
   location           = "us-east1-b"
   initial_node_count = 3
 
@@ -46,6 +46,7 @@ resource "google_container_cluster" "gke-cluster" {
         preemptible  = true
         machine_type = "n1-standard-1"
     metadata = {
+        disable-legacy-endpoints = "true"
         ssh-keys= "danielprga:${file("/home/jenkins/google_compute_engine.pub")}"
     }
     oauth_scopes = [
