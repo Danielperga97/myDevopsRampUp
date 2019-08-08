@@ -4,7 +4,7 @@ projects:
 zones:
   - "us-east1-b"
 filters: 
-  - 'name = jenkins-instance-*'
+  - 'name = jenkins-*'
 auth_kind: serviceaccount
 service_account_file: "/home/daniel/Documentos/Rampup-f6205223ec03.json"
 

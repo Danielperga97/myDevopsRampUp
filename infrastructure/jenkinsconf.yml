@@ -10,6 +10,25 @@
     yum:    
       name: java-1.8.0-openjdk-devel
       state: latest
+  - name: add jenkins repo
+    yum_repository:
+      name: Jenkins-stable
+      description: Jenkins YUM repo
+      baseurl: http://pkg.jenkins.io/redhat-stable
+      file: /etc/yum.repos.d/jenkins.repo
+  - name: add jenkins key
+    rpm_key:
+      state: present
+      key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+  - name: install jenkins
+    yum:
+      name: jenkins
+      state: present
+  - name: start and enable Jenkins server
+    service:
+      name: jenkins
+      state: started
+      enabled: yes
   - name: install nodejs 
     yum:    
       name: nodejs
@@ -23,6 +42,11 @@
       src: https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip
       dest: /usr/bin/
       remote_src: yes
+  - name: create jenkins user home folder
+    file:
+      path: /home/jenkins
+      state: directory
+      mode: "u=rwx,g=rwx,o=rw"
   - name: Copy service account to jenkins server
     copy:
       src: /home/daniel/Documentos/Rampup-45f3b26c77de.json
@@ -69,25 +93,6 @@
       groups: docker
       state: present
       append: yes 
-  - name: add jenkins repo
-    yum_repository:
-      name: Jenkins-stable
-      description: Jenkins YUM repo
-      baseurl: http://pkg.jenkins.io/redhat-stable
-      file: /etc/yum.repos.d/jenkins.repo
-  - name: add jenkins key 
-    rpm_key: 
-      state: present
-      key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-  - name: install jenkins 
-    yum:    
-      name: jenkins
-      state: present
-  - name: start and enable Jenkins server
-    service:
-      name: jenkins
-      state: started
-      enabled: yes 
   - name: disable jenkins initialization password screen
     lineinfile:
       dest: /etc/sysconfig/jenkins
