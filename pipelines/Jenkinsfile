@@ -55,14 +55,12 @@ pipeline {
                 sh "terraform apply -auto-approve"
                 }
                 sh "echo ---------------terraformed----------------------------"
+                dir('k8s/frontend/'){
                 sh  """   
                 #!/bin/bash 
                 gcloud container clusters get-credentials gke-cluster-1 --zone us-east1-b;
                 /home/jenkins/google-cloud-sdk/bin/kubectl
-                """
-                dir('k8s/frontend/'){
-                sh """
-                  /home/jenkins/google-cloud-sdk/bin/kubectl create -f frontDeployment.yml
+                /home/jenkins/google-cloud-sdk/bin/kubectl create -f frontDeployment.yml
                 /home/jenkins/google-cloud-sdk/bin/kubectl create -f frontService.yml
                 """
             }
