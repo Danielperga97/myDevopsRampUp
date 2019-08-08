@@ -27,7 +27,6 @@ pipeline {
                     [[ ":$PATH:" != *":/home/jenkins/google-cloud-sdk/bin:"* ]] && PATH="/home/jenkins/google-cloud-sdk/bin:${PATH}"
                     echo $PATH
 			        gcloud auth activate-service-account --key-file ${GOOGLE_SERVICE_ACCOUNT_KEY};
-                    gcloud components update
                 """
                 sh 'echo -------------------Account configured ------------------'
 
