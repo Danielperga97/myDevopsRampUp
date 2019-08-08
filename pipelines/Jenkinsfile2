@@ -26,7 +26,6 @@ pipeline {
                     source /home/jenkins/google-cloud-sdk/path.bash.inc;
                     [[ ":$PATH:" != *":/home/jenkins/google-cloud-sdk/bin:"* ]] && PATH="/home/jenkins/google-cloud-sdk/bin:${PATH}"
                     echo $PATH
-			        gcloud auth activate-service-account --key-file ${GOOGLE_SERVICE_ACCOUNT_KEY};
                 """
                 sh 'echo -------------------Account configured ------------------'
 
@@ -37,6 +36,7 @@ pipeline {
                 dir('k8s/frontend/'){
                 sh """
                 #!/bin/bash 
+                gcloud auth activate-service-account --key-file ${GOOGLE_SERVICE_ACCOUNT_KEY};
                 gcloud container clusters get-credentials gke-cluster-1 --zone us-east1-b;
                 /home/jenkins/google-cloud-sdk/bin/kubectl
                 /home/jenkins/google-cloud-sdk/bin/kubectl version --short
