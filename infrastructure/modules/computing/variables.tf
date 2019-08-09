@@ -5,7 +5,7 @@ variable "machine_type" {
   default= "n1-standard-1"
 }
 variable "machine_image" {
-  default= "centos7"
+  default= "centos-7"
 }
 variable "subnetwork" {
   default = "subnetwork1"
