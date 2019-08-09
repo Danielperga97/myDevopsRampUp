@@ -12,27 +12,15 @@ module "network" {
   source = "./modules/networking"
 }
 
-resource "google_compute_instance" "jenkins_instance" {
-  name         = "jenkins-instance-1"
-  machine_type = "n1-standard-1"
-  zone         = "us-east1-b"
-  labels={
-      role = "jenkins"
-  }
-  boot_disk {
-    initialize_params {
-      image = "centos-7"
-    }
-  }
-  network_interface {
-    subnetwork       = "projects/ramp-up-247818/regions/us-east1/subnetworks/${module.network.subnet_id}"
-    access_config {
-    }
-  }
-  metadata = {
-      ssh-keys= "danielprga:${file("/home/jenkins/google_compute_engine.pub")}"
-  }
+module "jenkins-instance1" {
+  source = "./modules/computing"
+  var.machine_name= "jenkins-instance-1"
 }
+module "jenkins-instance2" {
+  source = "./modules/computing"
+  var.machine_name= "jenkins-instance-2"  
+}
+
 resource "google_container_cluster" "gke-cluster" {
   name               = "gke-cluster-1"
   network            = "${module.network.vpc_id}"
