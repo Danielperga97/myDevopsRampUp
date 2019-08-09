@@ -14,11 +14,11 @@ module "network" {
 
 module "jenkins-instance1" {
   source = "./modules/computing"
-  var.machine_name = "jenkins-instance-1"
+  machine_name = "jenkins-instance-1"
 }
 module "jenkins-instance2" {
   source = "./modules/computing"
-  var.machine_name = "jenkins-instance-2"  
+  machine_name = "jenkins-instance-2"  
 }
 
 resource "google_container_cluster" "gke-cluster" {
