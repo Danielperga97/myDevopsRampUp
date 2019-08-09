@@ -14,11 +14,11 @@ module "network" {
 
 module "jenkins-instance1" {
   source = "./modules/computing"
-  var.machine_name= "jenkins-instance-1"
+  var.machine_name = "jenkins-instance-1"
 }
 module "jenkins-instance2" {
   source = "./modules/computing"
-  var.machine_name= "jenkins-instance-2"  
+  var.machine_name = "jenkins-instance-2"  
 }
 
 resource "google_container_cluster" "gke-cluster" {
@@ -35,7 +35,7 @@ resource "google_container_cluster" "gke-cluster" {
         machine_type = "n1-standard-1"
     metadata = {
         disable-legacy-endpoints = "true"
-        ssh-keys= "danielprga:${file("/home/jenkins/google_compute_engine.pub")}"
+        ssh-keys = "danielprga:${file("/home/jenkins/google_compute_engine.pub")}"
     }
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
