@@ -20,14 +20,14 @@ module "jenkins-instance1" {
 module "jenkins-instance2" {
   source = "./modules/computing"
   machine_name = "jenkins-instance-2"  
-  subnetwork         = "projects/ramp-up-247818/regions/us-east1/subnetworks/${module.network.subnet_id}"
+  subnetwork         = "${module.network.subnet_id}"
 
 }
 
 resource "google_container_cluster" "gke-cluster" {
   name               = "gke-cluster-1"
   network            = "${module.network.vpc_id}"
-  subnetwork         = "projects/ramp-up-247818/regions/us-east1/subnetworks/${module.network.subnet_id}"
+  subnetwork         = "${module.network.subnet_id}"
   location           = "us-east1-b"
   initial_node_count = 3
 
