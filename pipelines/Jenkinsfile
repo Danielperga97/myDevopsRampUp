@@ -7,29 +7,12 @@ pipeline {
     }
    
     stages {
-        stage('terraform and google cloud set up') {
+        stage('terraform set up') {
             steps {
                 dir('infrastructure/'){
                 sh 'terraform -v'
                 sh "terraform init"
                 }
-                sh 'echo ------------------setting up google cloud ------------------'
-                sh """
-        	        #!/bin/bash
-        	        curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-231.0.0-linux-x86_64.tar.gz;
-                    tar -xvf /tmp/google-cloud-sdk.tar.gz -C /home/jenkins/;
-		            /home/jenkins/google-cloud-sdk/install.sh -q;
-                    source /home/jenkins/google-cloud-sdk/path.bash.inc;
-			        gcloud config set project ${GOOGLE_PROJECT_ID};
-			        gcloud components install kubectl;
-                    PATH=$PATH:/home/jenkins/google-cloud-sdk/bin
-                    source /home/jenkins/google-cloud-sdk/path.bash.inc;
-                    [[ ":$PATH:" != *":/home/jenkins/google-cloud-sdk/bin:"* ]] && PATH="/home/jenkins/google-cloud-sdk/bin:${PATH}"
-                    echo $PATH
-			        gcloud auth activate-service-account --key-file ${GOOGLE_SERVICE_ACCOUNT_KEY};
-                    gcloud components update
-                """
-                sh 'echo -------------------Account configured ------------------'
 
             }
         }
