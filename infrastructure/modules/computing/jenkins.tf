@@ -11,7 +11,7 @@ resource "google_compute_instance" "jenkins_instance" {
     }
   }
   network_interface {
-    subnetwork       = "projects/ramp-up-247818/regions/us-east1/subnetworks/${module.network.subnet_id}"
+    subnetwork       = "projects/ramp-up-247818/regions/us-east1/subnetworks/${var.subnetwork}"
     access_config {
     }
   }

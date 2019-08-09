@@ -7,5 +7,12 @@ variable "machine_type" {
 variable "machine_image" {
   default= "centos7"
 }
+variable "subnetwork" {
+  default = "subnetwork1"
+}
+variable "network" {
+  default = "vpc1"
+}
+
 
 

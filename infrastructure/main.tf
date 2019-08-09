@@ -15,10 +15,13 @@ module "network" {
 module "jenkins-instance1" {
   source = "./modules/computing"
   machine_name = "jenkins-instance-1"
+  subnetwork = "${module.network.subnet_id}"
 }
 module "jenkins-instance2" {
   source = "./modules/computing"
   machine_name = "jenkins-instance-2"  
+  subnetwork         = "projects/ramp-up-247818/regions/us-east1/subnetworks/${module.network.subnet_id}"
+
 }
 
 resource "google_container_cluster" "gke-cluster" {
