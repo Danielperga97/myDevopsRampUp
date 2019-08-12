@@ -23,8 +23,8 @@ module "jenkins-instance2" {
   subnetwork         = "${module.network.subnet_id}"
 
 }
-resource "google_compute_instance" "anchore_instance" {
-  name         = "anchore_1"
+resource "google_compute_instance" "anchore-instance" {
+  name         = "anchore-1"
   machine_type = "n1-standard-1"
   zone         = "us-east1-b"
   labels={
