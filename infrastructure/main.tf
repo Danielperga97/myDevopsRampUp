@@ -23,7 +23,27 @@ module "jenkins-instance2" {
   subnetwork         = "${module.network.subnet_id}"
 
 }
-
+resource "google_compute_instance" "anchore_instance" {
+  name         = "anchore_1"
+  machine_type = "n1-standard-1"
+  zone         = "us-east1-b"
+  labels={
+      role = "anchore"
+  }
+  boot_disk {
+    initialize_params {
+      image = "centos-7"
+    }
+  }
+  network_interface {
+    subnetwork       = "subnetwork1"
+    access_config {
+    }
+  }
+  metadata = {
+      ssh-keys= "danielprga:${file("/home/jenkins/google_compute_engine.pub")}"
+  }
+}
 resource "google_container_cluster" "gke-cluster" {
   name               = "gke-cluster-1"
   network            = "${module.network.vpc_id}"

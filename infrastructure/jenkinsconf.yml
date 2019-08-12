@@ -3,8 +3,6 @@
   become: yes
   become_user: root
   become_method: sudo 
-  environment: 
-    JENKINS_HOME: /etc/sysconfig/jenkins
   tasks:
   - name: install java 
     yum:    
@@ -29,6 +27,94 @@
       name: jenkins
       state: started
       enabled: yes
+  - name: create jenkins brick
+    file:
+      path: /home/jenkins/brick
+      state: directory
+      owner: jenkins
+      recurse: yes
+      mode: 777
+    ignore_errors: true
+  - name: create jenkins user shared home folder
+    file:
+      path: /home/jenkins/home
+      state: directory
+      owner: jenkins
+      recurse: yes
+      mode: 777
+    ignore_errors: true
+  - name: install wget
+    yum: 
+      name: wget
+      state: latest
+  - name: install centos gluster repo 
+    yum: 
+      name: centos-release-gluster
+      state: latest
+  - name: install centos epel release repo
+    yum: 
+      name: epel-release
+      state: latest
+  - name: install glusterfs server 
+    yum:    
+      name: glusterfs-server
+      state: latest
+  - name: install xfsprogs
+    yum:    
+      name: xfsprogs
+      state: latest
+  - name: start and enable glusterfs server
+    service:
+      name: glusterd
+      state: started
+      enabled: yes
+  - name: create gluster volume
+    gluster_volume:
+      state: present
+      name: jenkins_home
+      bricks: /home/jenkins/brick
+      rebalance: yes
+      force: true
+      cluster:
+        - 10.20.0.31
+        - 10.20.0.32
+    run_once: true
+  - name: mount gluster volume
+    command: mount.glusterfs localhost:jenkins_home /home/jenkins/home
+    ignore_errors: true
+  - name: start gluster volume
+    gluster_volume:
+      state: started
+      name: jenkins_home
+  - name: stop jenkins
+    service:
+      name: jenkins
+      state: stopped
+  - name: move jenkins home folder
+    copy:
+      src: /var/lib/jenkins/
+      dest: /home/jenkins/home
+      remote_src: yes
+      mode: 777
+  - name: guarantee jenkins permission folder
+    command: chmod 777 -R /home/jenkins/home
+  - name: remove the folder
+    file: 
+      path: /var/lib/jenkins
+      state: absent 
+  - name: create symlink
+    file:
+      src: /home/jenkins/home
+      dest: /var/lib/jenkins
+      state: link
+      force: yes
+  - name: Ansible create file with content example
+    copy:
+      dest: "/etc/profile.d/variable.sh"
+      content: |
+        export JENKINS_HOME=/home/jenkins/home
+  - name: source 
+    shell: source "/etc/profile.d/variable.sh"
   - name: install nodejs 
     yum:    
       name: nodejs
@@ -42,11 +128,7 @@
       src: https://releases.hashicorp.com/terraform/0.12.6/terraform_0.12.6_linux_amd64.zip
       dest: /usr/bin/
       remote_src: yes
-  - name: create jenkins user home folder
-    file:
-      path: /home/jenkins
-      state: directory
-      mode: "u=rwx,g=rwx,o=rw"
+
   - name: Copy service account to jenkins server
     copy:
       src: /home/daniel/Documentos/Rampup-45f3b26c77de.json
@@ -112,6 +194,8 @@
     copy: 
       src: /home/daniel/Documentos/workspace_rampup/basic-security.groovy
       dest: /var/lib/jenkins/init.groovy.d/basic-security.groovy
+  - name: guarantee jenkins permission folder
+    command: chmod 777 -R /home/jenkins/home
   - name: restart jenkins service
     service: 
      name: jenkins 
@@ -120,7 +204,7 @@
     wait_for:
       host: 0.0.0.0
       port: 8080
-      delay: 35
+      delay: 120
   - name: install plugins 
     jenkins_plugin:
       name: "{{ item }}"
