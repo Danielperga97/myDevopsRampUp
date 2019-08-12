@@ -36,7 +36,7 @@ resource "google_compute_instance" "anchore-instance" {
     }
   }
   network_interface {
-    subnetwork       = "subnetwork1"
+    subnetwork       = "${module.network.subnet_id}"
     access_config {
     }
   }
