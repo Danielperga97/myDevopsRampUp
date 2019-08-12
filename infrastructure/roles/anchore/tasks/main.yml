@@ -1,0 +1,33 @@
+  - name: install git   
+    yum:
+      name: git
+      state: latest
+  - name: install docker
+    yum:
+      name: docker
+      state: latest
+  - name: start and enable docker
+    service:
+      name: docker
+      state: started
+      enabled: yes
+  - name: ensure group docker exists
+    group:
+      name: docker
+      state: present
+  - name: Create dockerfiles directory
+    file:
+      path: /home/danielprga/aevolume
+      state: directory
+      mode: '0777'
+  - name: pull an image
+    docker_image:
+      name: docker.io/anchore/anchore-engine:latest
+      source: pull
+  - name: data container
+    docker:
+      name: ae
+      image: docker.io/anchore/anchore-engine:latest
+      state: present
+  - name: copy compose
+    command: docker cp ae:/docker-compose.yaml /home/danielprga/aevolume/docker-compose.yaml
