@@ -20,14 +20,36 @@
       path: /home/danielprga/aevolume
       state: directory
       mode: '0777'
+  - name: install pip
+    easy_install:
+      name: pip
+      state: latest
+  - name: install docker sdk
+    pip:
+      name: docker-compose
+      extra_args: --ignore-installed
   - name: pull an image
     docker_image:
       name: docker.io/anchore/anchore-engine:latest
       source: pull
   - name: data container
-    docker:
+    docker_container:
       name: ae
       image: docker.io/anchore/anchore-engine:latest
       state: present
   - name: copy compose
     command: docker cp ae:/docker-compose.yaml /home/danielprga/aevolume/docker-compose.yaml
+  - name: docker-compose pull
+    docker_compose:
+      project_src: /home/danielprga/aevolume
+      state: present
+  - name: ensure group docker exists
+    group:
+      name: docker
+      state: present
+  - name: add jenkins user to docker group
+    user:
+      name: danielprga
+      groups: docker
+      state: present
+      append: yes 
