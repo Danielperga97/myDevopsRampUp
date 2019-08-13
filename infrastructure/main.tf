@@ -43,6 +43,44 @@ resource "google_compute_instance" "anchore-instance" {
   metadata = {
       ssh-keys= "danielprga:${file("/home/jenkins/google_compute_engine.pub")}"
   }
+      oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/devstorage.full_control",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/trace.append"
+    ]
+}
+
+resource "google_compute_instance" "vault-instance" {
+  name         = "vault-1"
+  machine_type = "n1-standard-1"
+  zone         = "us-east1-b"
+  labels={
+      role = "vault"
+  }
+  boot_disk {
+    initialize_params {
+      image = "centos-7"
+    }
+  }
+  network_interface {
+    subnetwork       = "${module.network.subnet_id}"
+    access_config {
+    }
+  }
+  metadata = {
+      ssh-keys= "danielprga:${file("/home/jenkins/google_compute_engine.pub")}"
+  }
+      oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/devstorage.full_control",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/trace.append"
+    ]
 }
 resource "google_container_cluster" "gke-cluster" {
   name               = "gke-cluster-1"
