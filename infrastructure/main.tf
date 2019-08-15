@@ -14,12 +14,12 @@ module "network" {
 
 module "jenkins-instance1" {
   source = "./modules/computing"
-  machine_name = "jenkins-instance-1"
+  machine_name = "jenkins-master-1"
   subnetwork = "${module.network.subnet_id}"
 }
 module "jenkins-instance2" {
   source = "./modules/computing"
-  machine_name = "jenkins-instance-2"  
+  machine_name = "jenkins-master-2"  
   subnetwork         = "${module.network.subnet_id}"
 
 }
